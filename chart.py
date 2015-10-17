@@ -61,7 +61,7 @@ def glucose_line_chart(recent_glucose, predicted_glucose, targets, display_unit)
     return cols, rows
 
 
-def input_history_area_chart(normalized_history, iob, display_unit):
+def input_history_area_chart(normalized_history, display_unit):
     assert(display_unit in ['mmol/L', 'mg/dL'])
 
     cols = [{'type': 'date', 'label': 'Date'}]
@@ -76,8 +76,6 @@ def input_history_area_chart(normalized_history, iob, display_unit):
             {'type': 'number', 'label': 'Bolus Insulin'},
             {'type': 'string', 'role': 'tooltip'},
             {'type': 'number', 'label': 'Meal carbs'},
-            {'type': 'string', 'role': 'tooltip'},
-            {'type': 'number', 'label': 'IOB'},
             {'type': 'string', 'role': 'tooltip'}
         ])
 
@@ -120,23 +118,7 @@ def input_history_area_chart(normalized_history, iob, display_unit):
                     {'v': values[2]},
                     {'v': tooltip},
                     {'v': values[3]},
-                    {'v': tooltip},
-                    {'v': None},
-                    {'v': None}
+                    {'v': tooltip}
                 ]})
-
-        for entry in iob:
-            row = [{'v': entry['date']}]
-            row += [{'v': None}] * 8
-            row.append({'v': entry['amount']})
-
-            tooltip = '{} – IOB {:.3f}{}'.format(
-                parse(entry['date']).time().strftime('%I:%M %p'),
-                entry['amount'],
-                entry['unit']
-            )
-            row.append({'v': tooltip})
-
-            rows.append({'c': row})
 
     return cols, rows
